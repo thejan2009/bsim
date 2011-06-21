@@ -21,7 +21,9 @@ import bsim.particle.BSimBacterium;
  * 
  */
 public class BSimLacBacterium extends BSimBacterium {
-		
+	
+	// TODO - add induced state soft computation via clamped exponential.
+	
 	protected static Random bacRng = new Random();
 	
 	// Internal Gene Regulatory Network (ODE system)
@@ -66,7 +68,7 @@ public class BSimLacBacterium extends BSimBacterium {
 		grn = new BSimLacBacteriumGRN();
 		
 		grn.RANDOM_ICS = true;
-		grn.POPULATION_VARIANCE = true;
+		grn.POPULATION_VARIANCE = false;
 		
 		INDUCTION_AFFECTS_GROWTH = true;
 		
@@ -159,27 +161,7 @@ public class BSimLacBacterium extends BSimBacterium {
 		child.y[1] = y[1];
 		
 		childList.add(child);
-	}
-	
-	
-	/*********************************************************
-	 * 'soft' measure of induced state: Istate(bac.y[1]).
-	 * 
-	 * Exponential function increasing from 0 to 1, uninduced to induced respectively,
-	 * when bac.y[1] > 10000 the beastie is definitely induced.
-	 */
-	public double inducedState() {
-		double inducedness = 0;
-		
-		if(y[1] <= 10000){
-			inducedness = Math.exp(0.0025*(y[1] - 10000));
-		} else {
-			inducedness = 1;
-		}
-		
-		return inducedness;
-	}
-	
+	}	
 	
 	/*********************************************************
 	 * Lac Operon GRN.

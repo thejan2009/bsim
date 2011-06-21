@@ -48,8 +48,8 @@ public class BSimLacOperon {
 			simTimeSeconds = 60000;
 		}
 		
-		double externalChem = 200;
-		boolean CONSTANT_CHEM_FIELD = true;
+		double externalChem = 0;
+		boolean CONSTANT_CHEM_FIELD = false;
 		if(args.length >= 3){
 			externalChem = Double.parseDouble(args[2]);
 			CONSTANT_CHEM_FIELD = true;
@@ -59,10 +59,10 @@ public class BSimLacOperon {
 		 * GLOBAL PARAMETERS ETC
 		 */
 		// Run simulation in export mode?
-		boolean exportData = false;
+		boolean exportData = true;
 			
 		// Stable population number of bacteria
-		int populationLimit = 100;
+		int populationLimit = 500;
 		
 		// Path to results directory (for exported data)
 		String exportPath = new String("./results/" + timestamp + "/");		
@@ -231,15 +231,18 @@ public class BSimLacOperon {
 			@Override
 			public void scene(PGraphics3D p3d) {
 				for(BSimLacBacterium b : bacteria) {
-					Color bacCol;
-					
-					// Yellow if induced, red if not
-					bacCol = new Color(255, (int)(255*b.inducedState()), 0);
+					// TODO - colour based on induction soft computation
+					Color bacCol = new Color(255,0,0);
+					if(b.y[1]>1000){
+						bacCol = Color.red;
+					}else{
+						bacCol = Color.green;
+					}
 					
 					draw(b, bacCol);
 				}
 								
-				draw(externalInducerField, new Color(200,200,255), 0.2f);
+				draw(externalInducerField, new Color(0,180,180), 187/100,187.0);
 			}
 		}; 
 		sim.setDrawer(drawer);	
@@ -353,7 +356,7 @@ public class BSimLacOperon {
 				@Override
 				public void before() {
 					super.before();
-					write("time,Iex,I_avg,I_min,I_max,inducedproportion,population");
+					write("time,Iex,I_avg,I_std,I_min,I_max,population");
 				}
 				
 				@Override
@@ -379,7 +382,14 @@ public class BSimLacOperon {
 						bacInducerAvg += b.y[1];
 					}
 					bacInducerAvg = bacInducerAvg/bacteria.size();
-										
+					
+					// Population inducer standard deviation
+					double bacInducerStdDev = 0;
+					for(BSimLacBacterium b: bacteria){
+						bacInducerStdDev += Math.pow(b.y[1] - bacInducerAvg, 2);
+					}
+					Math.sqrt(bacInducerStdDev/bacteria.size());
+					
 					// Population Minimum and maximum inducer level
 					// (Oh the brute-force inefficiency of it all :D)
 					double bacInducerMin = Double.MAX_VALUE;
@@ -393,20 +403,13 @@ public class BSimLacOperon {
 						}
 					}
 					
-					// Compute the proportion of the bacteria that are 'induced' 
-					double inducedProportion = 0;
-					for(BSimLacBacterium b : bacteria){
-						inducedProportion += b.inducedState();
-					}
-					inducedProportion = inducedProportion/bacteria.size();
-					
 					// Fill up a mini buffer for this line and add it to the buffered writer
 					String buffer = sim.getFormattedTime() + ","
 									+ extInducerAvg + ","
 									+ bacInducerAvg + ","
+									+ bacInducerStdDev + ","
 									+ bacInducerMin + ","
 									+ bacInducerMax + ","
-									+ inducedProportion + ","
 									+ bacteria.size();
 					
 					write(buffer);
