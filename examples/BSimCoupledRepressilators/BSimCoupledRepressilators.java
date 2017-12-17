@@ -1,12 +1,13 @@
 package BSimCoupledRepressilators;
 
-import java.awt.Color;
+import java.awt.*;
 import java.util.Calendar;
 import java.util.Random;
 import java.util.Vector;
 
 import javax.vecmath.Vector3d;
 
+import processing.core.PConstants;
 import processing.core.PGraphics3D;
 import bsim.BSim;
 import bsim.BSimChemicalField;
@@ -32,11 +33,16 @@ public class BSimCoupledRepressilators {
 	public static int ICS_RANDOM = 1;
 	public static int ICS_UNIFORM = 2;
 
+
 	/*********************************************************
 	 * Simulation Definition
 	 */
 	 public static void main(String[] args) {
 
+
+		 double simX = 50.0;
+		 double simY = 50.0;
+		 double simZ = 1.0;
 
 		/*********************************************************
 		 * Create a new directory for the simulation results
@@ -48,23 +54,25 @@ public class BSimCoupledRepressilators {
 		 */
 		BSim sim = new BSim();			// New Sim object
 		sim.setDt(0.01);				// Simulation Timestep
-		sim.setSimulationTime(10); 		// Simulation Length (6000 = 100 minutes)
+		sim.setSimulationTime(6000); 		// Simulation Length (6000 = 100 minutes)
 		sim.setTimeFormat("0.00");		// Time Format for display
 		sim.setBound(100,100,100);		// Simulation Boundaries
-		
+
+         //set viscosity - MD 17.12.2017
+         sim.setVisc(1.0);
 		
 		/*********************************************************
 		 * Set up some constants
 		 */
 		// diffusivity of AI in (microns^2/sec)? (BSim 1.0: diffusion coeff. of AHL = 0.23 per second)
-		final double diffusivity = 100;  	// Diffusivity of AHL
+		final double diffusivity = 0.0001;  	// Diffusivity of AHL
 		final double decayRate = 0.01/60; 	// Decay Rate (0.1666 = 10 per minute, 0.01/60 = 1e-2 per min)
 		
 		final double cellWallDiffusivity = 2.0; 		// Cell wall diffusivity (Should be the same as eta in the GRN?)
 		final int theInitialConditions = ICS_RANDOM;	// What initial conditions do we want to use?
 		
 		// Set up the chemical field for AHL:
-		final BSimChemicalField field = new BSimChemicalField(sim, new int[]{25,25,25}, diffusivity, decayRate);
+		final BSimChemicalField field = new BSimChemicalField(sim, new int[]{25,25,25}, diffusivity, decayRate); // z = 25 (now 1)
 
 		
 		/*********************************************************
@@ -85,7 +93,7 @@ public class BSimCoupledRepressilators {
 				repGRN.generateBeta();
 				y = repGRN.getICs();
 			}
-			
+
 			/*
 			 * Action each time step: iterate ODE system for one time-step.
 			 */
@@ -104,7 +112,7 @@ public class BSimCoupledRepressilators {
 				
 				// Get the external chemical field level for the GRN ode system later on:
 				repGRN.setExternalQuorumLevel(externalChem);
-				
+
 				// Solve the ode system
 				// IMPORTANT: re-scale the time units correctly (GRN equations are in minutes, BSim works in seconds)
 				yNew = BSimOdeSolver.rungeKutta45(repGRN, sim.getTime()/60, y, sim.getDt()/60);
@@ -202,17 +210,50 @@ public class BSimCoupledRepressilators {
 		/*********************************************************
 		 * Create the vector of all bacteria used in the simulation 
 		 */
-		final Vector<BSimRepressilatorBacterium> bacteria = new Vector<BSimRepressilatorBacterium>();
+
+		 /*Matej Dolenc, 17.12.2017
+		  */
+
+		 final Vector<BSimRepressilatorBacterium> bacteria = new Vector<BSimRepressilatorBacterium>();
+
+         //pravilo za razporeditev celic - mreža (če hočeš več celic spremeni x,y,z da bojo manjši razmiki med njimi)
+         int x = 10, y = 10, z = 10;
+
+		 // Add bacteria to the fixed position in a vector
+		 while(bacteria.size() < 200) { //200
+			 BSimRepressilatorBacterium p = new BSimRepressilatorBacterium(sim,
+					 new Vector3d(x,y,z));
+
+             x += 10;
+             if (x >= sim.getBound().x-10){
+                 x = 10;
+                 y += 20;
+             }
+             if (y >= sim.getBound().y-10){
+                 y = 10;
+                 z += 20;
+             }
+             if(z >= sim.getBound().z-10){
+                 z = 10;
+                 break; //vse smo zasedl? nism testirou preveč, ampak mislm da ne bomo nikol presegl. Btw, to sm se čist random neki zmislu. samo tok da je determ. postavitev ne pa random
+             }
+
+			 if(!p.intersection(bacteria)) bacteria.add(p);
+		 }
+		 //end of custom code Matej Dolenc 17.12.2017
+
+		 //ORIGINAL CODE IS HERE
+		/*final Vector<BSimRepressilatorBacterium> bacteria = new Vector<BSimRepressilatorBacterium>();
 		
 		// Add randomly positioned bacteria to the vector
-		while(bacteria.size() < 200) {		
+		while(bacteria.size() < 200) { //200
 			BSimRepressilatorBacterium p = new BSimRepressilatorBacterium(sim, 
 										  new Vector3d(Math.random()*sim.getBound().x,
 													   Math.random()*sim.getBound().y,
 													   Math.random()*sim.getBound().z));
 			if(!p.intersection(bacteria)) bacteria.add(p);
-		}
-
+		}*/
+		//END OF ORIGINAL CODE
 		
 		/********************************************************* 
 		 * Implement tick() on a BSimTicker and add the ticker to the simulation	  
@@ -241,6 +282,58 @@ public class BSimCoupledRepressilators {
 		 * increases.
 		 */
 		BSimDrawer drawer = new BSimP3DDrawer(sim, 800,600) {
+            /*
+			@Override
+			public void boundaries() {
+				p3d.noFill();
+				p3d.stroke(128, 128, 255);
+				p3d.pushMatrix();
+				p3d.translate((float)boundCentre.x,(float)boundCentre.y,(float)boundCentre.z);
+				p3d.box((float)bound.x, (float)bound.y, (float)bound.z);
+				p3d.popMatrix();
+				p3d.noStroke();
+			}
+
+			@Override
+			public void draw(Graphics2D g) {
+				p3d.beginDraw();
+
+				if(!cameraIsInitialised){
+					// camera(eyeX, eyeY, eyeZ, centerX, centerY, centerZ, upX, upY, upZ)
+					p3d.camera((float)bound.x*0.5f, (float)bound.y*0.5f,
+							// Set the Z offset to the largest of X/Y dimensions for a reasonable zoom-out distance:
+							simX > simY ? (float)simX : (float)simY,
+//                            10,
+							(float)bound.x*0.5f, (float)bound.y*0.5f, 0,
+							0,1,0);
+					cameraIsInitialised = true;
+				}
+
+				p3d.textFont(font);
+				p3d.textMode(PConstants.SCREEN);
+
+				p3d.sphereDetail(10);
+				p3d.noStroke();
+				p3d.background(255, 255,255);
+
+				scene(p3d);
+				boundaries();
+				time();
+
+				p3d.endDraw();
+				g.drawImage(p3d.image, 0,0, null);
+			}*/
+
+			/**
+			 * Draw the formatted simulation time to screen.
+			 */
+			/*@Override
+			public void time() {
+				p3d.fill(0);
+				p3d.text(sim.getFormattedTimeHours(), 50, 50);
+//                p3d.text(sim.getFormattedTime(), 50, 50);
+			}*/
+
 			@Override
 			public void scene(PGraphics3D p3d) {
 				// Draw the chemical field a pretty pale blue colour
@@ -297,6 +390,7 @@ public class BSimCoupledRepressilators {
 				write("Diffusivity," + diffusivity);
 				write("Decay rate," + decayRate);
 				write("Cell wall diffusion," + cellWallDiffusivity);
+                write("Viscosity," + sim.getVisc());
 				if(theInitialConditions == ICS_RANDOM) write("Initial Conditions, Random");
 				else write("Initial Conditions, Uniform");
 			}
@@ -345,9 +439,9 @@ public class BSimCoupledRepressilators {
 			@Override
 			public void before() {
 				super.before();
-				write("time(seconds),internal_AI"); 
+				write("time(seconds),internal_AI");
 			}
-			
+
 			@Override
 			public void during() {
 				String o = sim.getFormattedTime();
@@ -367,5 +461,6 @@ public class BSimCoupledRepressilators {
 		 * or sim.export() to set exporters working 
 		 */
 		sim.preview();
+		 //sim.export();
 	}
 }
