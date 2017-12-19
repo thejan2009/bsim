@@ -1,15 +1,19 @@
 
-%opomba
-% izbrisi prvo vrstico iz .csv fajla -> HEADER
+% za plottanje samo dodaj poti do fajlov ob izvedbi. hint:
+% BSimCoupledRepressilators jih ob koncu izvajanja izpise v stdout.
 
-% za plottanje samo spremeni ime fajlov
 % 1. plot je za nivo lacI mRNA v bakterijah
 % 2. plot je za nivo AI (auto inducer) v bakterijah
+
+arg_list = argv();
+lacl_file = arg_list{1};
+AI_file = arg_list{2};
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %% PLOT lacI mRNA %%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%
-Array=csvread('C:\Users\Matej\Desktop\lacI_ALL_100min_orig.csv');
+Array=csvread(lacl_file, 1, 0);
+
 
 %disp(Array);
 simTime = size(Array, 1);
@@ -27,7 +31,7 @@ for i = 1:numOfCells
     plot(steps, celice(:,i), 'color', rand(1,3));
 end
 title('Represilator - simulacija')
-xlabel('Simulacijski èas [s]') % x-axis label
+xlabel('Trajanje [s]') % x-axis label
 ylabel('Nivo lacI mRNA v bakterijah') % y-axis label
 
 hold off;
@@ -35,7 +39,7 @@ hold off;
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %% PLOT AI - autoInducer %%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%
-Array2=csvread('C:\Users\Matej\Desktop\AI_internal_ALL_100min_orig.csv');
+Array2=csvread(AI_file, 1, 0);
 
 %disp(Array);
 simTime = size(Array2, 1);
@@ -53,7 +57,7 @@ for i = 1:numOfCells
     plot(steps, celice(:,i), 'color', rand(1,3));
 end
 title('Represilator - simulacija')
-xlabel('Simulacijski èas [s]') % x-axis label
+xlabel('Trajanje [s]') % x-axis label
 ylabel('Nivo AI v bakterijah') % y-axis label
 
 hold off;
