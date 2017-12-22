@@ -59,16 +59,17 @@ public class BSimCoupledRepressilators {
 		sim.setBound(100,100,100);		// Simulation Boundaries
 
          //set viscosity - MD 17.12.2017
-         sim.setVisc(1.0);
+         //sim.setVisc(1.0);
+		 sim.setVisc(0.0027);
 		
 		/*********************************************************
 		 * Set up some constants
 		 */
 		// diffusivity of AI in (microns^2/sec)? (BSim 1.0: diffusion coeff. of AHL = 0.23 per second)
-		final double diffusivity = 0.0001;  	// Diffusivity of AHL
+		final double diffusivity = 0.0001;  	// Diffusivity of AHL 0.0001; 0.00005; 0.0005; 0.001;
 		final double decayRate = 0.01/60; 	// Decay Rate (0.1666 = 10 per minute, 0.01/60 = 1e-2 per min)
 		
-		final double cellWallDiffusivity = 2.0; 		// Cell wall diffusivity (Should be the same as eta in the GRN?)
+		final double cellWallDiffusivity = 2.0;		// Cell wall diffusivity (Should be the same as eta in the GRN?) 2.0; 1.0; 5.0;
 		final int theInitialConditions = ICS_RANDOM;	// What initial conditions do we want to use?
 		
 		// Set up the chemical field for AHL:
@@ -214,7 +215,7 @@ public class BSimCoupledRepressilators {
 		 /*Matej Dolenc, 17.12.2017
 		  */
 
-		 final Vector<BSimRepressilatorBacterium> bacteria = new Vector<BSimRepressilatorBacterium>();
+		 /*final Vector<BSimRepressilatorBacterium> bacteria = new Vector<BSimRepressilatorBacterium>();
 
          //pravilo za razporeditev celic - mreža (če hočeš več celic spremeni x,y,z da bojo manjši razmiki med njimi)
          int x = 10, y = 10, z = 10;
@@ -239,11 +240,11 @@ public class BSimCoupledRepressilators {
              }
 
 			 if(!p.intersection(bacteria)) bacteria.add(p);
-		 }
+		 }*/
 		 //end of custom code Matej Dolenc 17.12.2017
 
 		 //ORIGINAL CODE IS HERE
-		/*final Vector<BSimRepressilatorBacterium> bacteria = new Vector<BSimRepressilatorBacterium>();
+		final Vector<BSimRepressilatorBacterium> bacteria = new Vector<BSimRepressilatorBacterium>();
 		
 		// Add randomly positioned bacteria to the vector
 		while(bacteria.size() < 200) { //200
@@ -252,7 +253,7 @@ public class BSimCoupledRepressilators {
 													   Math.random()*sim.getBound().y,
 													   Math.random()*sim.getBound().z));
 			if(!p.intersection(bacteria)) bacteria.add(p);
-		}*/
+		}
 		//END OF ORIGINAL CODE
 		
 		/********************************************************* 
@@ -460,7 +461,7 @@ public class BSimCoupledRepressilators {
 		 * Call sim.preview() to preview the scene 
 		 * or sim.export() to set exporters working 
 		 */
-		sim.preview();
-		 //sim.export();
+		//sim.preview();
+		 sim.export();
 	}
 }
