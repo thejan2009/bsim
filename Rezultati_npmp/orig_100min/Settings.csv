@@ -1,0 +1,8 @@
+Dt,0.01
+Time (sec),60.0
+Diffusivity,1.0E-4
+Decay rate,1.6666666666666666E-4
+Cell wall diffusion,2.0
+Viscosity,0.0027
+Initial Conditions, Random
+Elapsed time (sec),12.121

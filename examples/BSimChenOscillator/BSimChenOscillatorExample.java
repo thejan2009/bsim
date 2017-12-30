@@ -264,6 +264,7 @@ public class BSimChenOscillatorExample {
                 }
 
                 // ********************************************** Growth related activities if enabled.
+                //MD To ignoriramo!!!!
                 if(WITH_GROWTH) {
 
                     // ********************************************** Growth and division
