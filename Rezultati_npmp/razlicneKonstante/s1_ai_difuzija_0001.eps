@@ -1,0 +1,324 @@
+%!PS-Adobe-3.0 EPSF-3.0
+%%Title: gl2ps_renderer figure
+%%Creator: GL2PS 1.4.0, (C) 1999-2017 C. Geuzaine
+%%For: Octave
+%%CreationDate: Tue Jan  2 22:14:12 2018
+%%LanguageLevel: 3
+%%DocumentData: Clean7Bit
+%%Pages: 1
+%%BoundingBox: 0 0 576 432
+%%EndComments
+%%BeginProlog
+/gl2psdict 64 dict def gl2psdict begin
+/tryPS3shading false def % set to false to force subdivision
+/rThreshold 0.064 def % red component subdivision threshold
+/gThreshold 0.034 def % green component subdivision threshold
+/bThreshold 0.1 def % blue component subdivision threshold
+/BD { bind def } bind def
+/C  { setrgbcolor } BD
+/G  { 0.082 mul exch 0.6094 mul add exch 0.3086 mul add neg 1.0 add setgray } BD
+/W  { setlinewidth } BD
+/LC  { setlinecap } BD
+/LJ  { setlinejoin } BD
+/FC { findfont exch /SH exch def SH scalefont setfont } BD
+/SW { dup stringwidth pop } BD
+/S  { FC moveto show } BD
+/SBC{ FC moveto SW -2 div 0 rmoveto show } BD
+/SBR{ FC moveto SW neg 0 rmoveto show } BD
+/SCL{ FC moveto 0 SH -2 div rmoveto show } BD
+/SCC{ FC moveto SW -2 div SH -2 div rmoveto show } BD
+/SCR{ FC moveto SW neg SH -2 div rmoveto show } BD
+/STL{ FC moveto 0 SH neg rmoveto show } BD
+/STC{ FC moveto SW -2 div SH neg rmoveto show } BD
+/STR{ FC moveto SW neg SH neg rmoveto show } BD
+/FCT { FC translate 0 0 } BD
+/SR  { gsave FCT moveto rotate show grestore } BD
+/SBCR{ gsave FCT moveto rotate SW -2 div 0 rmoveto show grestore } BD
+/SBRR{ gsave FCT moveto rotate SW neg 0 rmoveto show grestore } BD
+/SCLR{ gsave FCT moveto rotate 0 SH -2 div rmoveto show grestore} BD
+/SCCR{ gsave FCT moveto rotate SW -2 div SH -2 div rmoveto show grestore} BD
+/SCRR{ gsave FCT moveto rotate SW neg SH -2 div rmoveto show grestore} BD
+/STLR{ gsave FCT moveto rotate 0 SH neg rmoveto show grestore } BD
+/STCR{ gsave FCT moveto rotate SW -2 div SH neg rmoveto show grestore } BD
+/STRR{ gsave FCT moveto rotate SW neg SH neg rmoveto show grestore } BD
+/P  { newpath 0.0 360.0 arc closepath fill } BD
+/LS { newpath moveto } BD
+/L  { lineto } BD
+/LE { lineto stroke } BD
+/T  { newpath moveto lineto lineto closepath fill } BD
+/STshfill {
+      /b1 exch def /g1 exch def /r1 exch def /y1 exch def /x1 exch def
+      /b2 exch def /g2 exch def /r2 exch def /y2 exch def /x2 exch def
+      /b3 exch def /g3 exch def /r3 exch def /y3 exch def /x3 exch def
+      gsave << /ShadingType 4 /ColorSpace [/DeviceRGB]
+      /DataSource [ 0 x1 y1 r1 g1 b1 0 x2 y2 r2 g2 b2 0 x3 y3 r3 g3 b3 ] >>
+      shfill grestore } BD
+/Tm { 3 -1 roll 8 -1 roll 13 -1 roll add add 3 div
+      3 -1 roll 7 -1 roll 11 -1 roll add add 3 div
+      3 -1 roll 6 -1 roll 9 -1 roll add add 3 div C T } BD
+/STsplit {
+      4 index 15 index add 0.5 mul
+      4 index 15 index add 0.5 mul
+      4 index 15 index add 0.5 mul
+      4 index 15 index add 0.5 mul
+      4 index 15 index add 0.5 mul
+      5 copy 5 copy 25 15 roll
+      9 index 30 index add 0.5 mul
+      9 index 30 index add 0.5 mul
+      9 index 30 index add 0.5 mul
+      9 index 30 index add 0.5 mul
+      9 index 30 index add 0.5 mul
+      5 copy 5 copy 35 5 roll 25 5 roll 15 5 roll
+      4 index 10 index add 0.5 mul
+      4 index 10 index add 0.5 mul
+      4 index 10 index add 0.5 mul
+      4 index 10 index add 0.5 mul
+      4 index 10 index add 0.5 mul
+      5 copy 5 copy 40 5 roll 25 5 roll 15 5 roll 25 5 roll
+      STnoshfill STnoshfill STnoshfill STnoshfill } BD
+/STnoshfill {
+      2 index 8 index sub abs rThreshold gt
+      { STsplit }
+      { 1 index 7 index sub abs gThreshold gt
+        { STsplit }
+        { dup 6 index sub abs bThreshold gt
+          { STsplit }
+          { 2 index 13 index sub abs rThreshold gt
+            { STsplit }
+            { 1 index 12 index sub abs gThreshold gt
+              { STsplit }
+              { dup 11 index sub abs bThreshold gt
+                { STsplit }
+                { 7 index 13 index sub abs rThreshold gt
+                  { STsplit }
+                  { 6 index 12 index sub abs gThreshold gt
+                    { STsplit }
+                    { 5 index 11 index sub abs bThreshold gt
+                      { STsplit }
+                      { Tm }
+                      ifelse }
+                    ifelse }
+                  ifelse }
+                ifelse }
+              ifelse }
+            ifelse }
+          ifelse }
+        ifelse }
+      ifelse } BD
+tryPS3shading
+{ /shfill where
+  { /ST { STshfill } BD }
+  { /ST { STnoshfill } BD }
+  ifelse }
+{ /ST { STnoshfill } BD }
+ifelse
+end
+%%EndProlog
+%%BeginSetup
+/DeviceRGB setcolorspace
+gl2psdict begin
+%%EndSetup
+%%Page: 1 1
+%%BeginPageSetup
+%%EndPageSetup
+mark
+gsave
+1.0 1.0 scale
+1 1 1 C
+newpath 0 0 moveto 576 0 lineto 576 432 lineto 0 432 lineto
+closepath fill
+gsave
+1.0 1.0 scale
+1 1 1 C
+newpath 0 0 moveto 576 0 lineto 576 432 lineto 0 432 lineto
+closepath fill
+newpath 0 0 moveto 576 0 lineto 576 432 lineto 0 432 lineto
+closepath clip
+1 1 1 C
+521.28 47.52 74.88 47.52 74.88 399.6 T
+521.28 399.6 521.28 47.52 74.88 399.6 T
+0.5 W
+0.15 0.15 0.15 C
+140.089 399.6 LS
+140.089 395.135 LE
+220.925 47.52 LS
+220.925 51.985 LE
+220.925 399.6 LS
+220.925 395.135 LE
+301.761 47.52 LS
+301.761 51.985 LE
+301.761 399.6 LS
+301.761 395.135 LE
+382.597 47.52 LS
+382.597 51.985 LE
+382.597 399.6 LS
+382.597 395.135 LE
+463.433 47.52 LS
+463.433 51.985 LE
+463.433 399.6 LS
+463.433 395.135 LE
+0.14902 0.14902 0.14902 C
+(1000) 140.089 42.5189 10 /Helvetica STC
+(2000) 220.925 42.5189 10 /Helvetica STC
+(3000) 301.761 42.5189 10 /Helvetica STC
+(4000) 382.597 42.5189 10 /Helvetica STC
+(5000) 463.433 42.5189 10 /Helvetica STC
+0 0.447 0.741 C
+74.88 47.52 LS
+79.348 47.52 LE
+74.88 117.936 LS
+79.348 117.936 LE
+74.88 188.352 LS
+79.348 188.352 LE
+74.88 258.768 LS
+79.348 258.768 LE
+74.88 329.184 LS
+79.348 329.184 LE
+74.88 399.6 LS
+79.348 399.6 LE
+0 0.443137 0.737255 C
+(0.1) 69.8755 47.52 10 /Helvetica SCR
+(0.15) 69.8755 117.936 10 /Helvetica SCR
+(0.2) 69.8755 188.352 10 /Helvetica SCR
+(0.25) 69.8755 258.768 10 /Helvetica SCR
+(0.3) 69.8755 329.184 10 /Helvetica SCR
+(0.35) 69.8755 399.6 10 /Helvetica SCR
+[16 0] 0 setdash
+0.15 0.15 0.15 C
+74.88 47.52 LS
+521.28 47.52 LE
+74.88 399.6 LS
+521.28 399.6 LE
+0 0.447 0.741 C
+74.88 47.52 LS
+74.88 399.6 LE
+0.14902 0.14902 0.14902 C
+(Trajanje [s]) 298.08 28.5189 11 /Helvetica STC
+0 0.443137 0.737255 C
+(Amplituda nivoja ai v bakterijah) 90 43.8755 223.56 11 /Helvetica SBCR
+[] 0 setdash
+0 0.447 0.741 C
+74.88 306.446 LS
+91.4583 191.445 L
+109.287 164.182 L
+126.309 104.209 L
+144.791 231.847 L
+161.975 348.861 L
+180.699 332.728 L
+198.397 309.504 L
+216.341 295.06 L
+232.194 327.28 L
+250.727 369.519 L
+268.765 307.235 L
+287.009 329.366 L
+303.187 299.328 L
+320.958 379.106 L
+339.574 307.23 L
+356.178 319.42 L
+374.76 378.128 L
+392.304 270.631 L
+409.003 301.171 L
+423.721 258.982 L
+440.517 349.63 L
+455.586 258.483 L
+472.144 251.855 L
+486.698 272.57 L
+503.982 362.813 L
+521.28 250.213 LE
+0.15 0.15 0.15 C
+140.089 47.52 LS
+140.089 51.985 LE
+0 0 0 C
+(Represilator - simulacija) 298.08 409.6 11 /Helvetica-Bold SBC
+grestore
+gsave
+1.0 1.0 scale
+newpath 0 0 moveto 576 0 lineto 576 432 lineto 0 432 lineto
+closepath clip
+0.5 W
+0.85 0.325 0.098 C
+503.982 235.404 LS
+521.28 194.999 LE
+0.15 0.15 0.15 C
+220.925 47.52 LS
+220.925 51.985 LE
+301.761 47.52 LS
+301.761 51.985 LE
+382.597 47.52 LS
+382.597 51.985 LE
+463.433 47.52 LS
+463.433 51.985 LE
+0.14902 0.14902 0.14902 C
+(1000) 140.089 42.5189 10 /Helvetica STC
+(2000) 220.925 42.5189 10 /Helvetica STC
+(3000) 301.761 42.5189 10 /Helvetica STC
+(4000) 382.597 42.5189 10 /Helvetica STC
+(5000) 463.433 42.5189 10 /Helvetica STC
+0.85 0.325 0.098 C
+521.28 47.52 LS
+516.812 47.52 LE
+521.28 117.936 LS
+516.812 117.936 LE
+521.28 188.352 LS
+516.812 188.352 LE
+521.28 258.768 LS
+516.812 258.768 LE
+521.28 329.184 LS
+516.812 329.184 LE
+521.28 399.6 LS
+516.812 399.6 LE
+0.847059 0.321569 0.0941176 C
+(300) 526.284 47.52 10 /Helvetica SCL
+(400) 526.284 117.936 10 /Helvetica SCL
+(500) 526.284 188.352 10 /Helvetica SCL
+(600) 526.284 258.768 10 /Helvetica SCL
+(700) 526.284 329.184 10 /Helvetica SCL
+(800) 526.284 399.6 10 /Helvetica SCL
+[16 0] 0 setdash
+0.15 0.15 0.15 C
+521.28 47.52 LS
+74.88 47.52 LE
+0.85 0.325 0.098 C
+521.28 47.52 LS
+521.28 399.6 LE
+0.847059 0.321569 0.0941176 C
+(Valovna dolzina ai v bakterijah) 90 548.284 223.56 11 /Helvetica STCR
+[] 0 setdash
+0.85 0.325 0.098 C
+74.88 223.152 LS
+91.4583 181.846 L
+109.287 176.142 L
+126.309 308.059 L
+144.791 225.644 L
+161.975 184.127 L
+180.699 236.995 L
+198.397 283.343 L
+216.341 183.296 L
+232.194 146.328 L
+250.727 294.553 L
+268.765 268.119 L
+287.009 178.226 L
+303.187 144.286 L
+320.958 331.705 L
+339.574 232.123 L
+356.178 154.566 L
+374.76 248.121 L
+392.304 248.361 L
+409.003 188.944 L
+423.721 113.204 L
+440.517 219.279 L
+455.586 214.152 L
+472.144 168.34 L
+486.698 133.23 L
+503.982 235.404 LE
+0.15 0.15 0.15 C
+140.089 47.52 LS
+140.089 51.985 LE
+grestore
+grestore
+showpage
+cleartomark
+%%PageTrailer
+%%Trailer
+end
+%%EOF
