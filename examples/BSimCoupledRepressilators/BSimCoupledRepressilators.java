@@ -65,10 +65,10 @@ public class BSimCoupledRepressilators {
 		 * Set up some constants
 		 */
 		// diffusivity of AI in (microns^2/sec)? (BSim 1.0: diffusion coeff. of AHL = 0.23 per second)
-		final double diffusivity = 0.0001;  	// Diffusivity of AHL
+		final double diffusivity = 0.0001;  	// Diffusivity of AHL 0.0001, 0.001, 0.00001
 		final double decayRate = 0.01/60; 	// Decay Rate (0.1666 = 10 per minute, 0.01/60 = 1e-2 per min)
 		
-		final double cellWallDiffusivity = 2.0; 		// Cell wall diffusivity (Should be the same as eta in the GRN?)
+		final double cellWallDiffusivity = 2.0; 		// Cell wall diffusivity (Should be the same as eta in the GRN?) 2.0, 1.0, 5.0, 10.0
 		final int theInitialConditions = ICS_RANDOM;	// What initial conditions do we want to use?
 		
 		// Set up the chemical field for AHL:
@@ -220,7 +220,7 @@ public class BSimCoupledRepressilators {
          int x = 10, y = 10, z = 10;
 
 		 // Add bacteria to the fixed position in a vector
-		 while(bacteria.size() < 200) { //200
+		 while(bacteria.size() < 1000) { //200, 100, 500, 1000
 			 BSimRepressilatorBacterium p = new BSimRepressilatorBacterium(sim,
 					 new Vector3d(x,y,z));
 
@@ -461,6 +461,6 @@ public class BSimCoupledRepressilators {
 		 * or sim.export() to set exporters working 
 		 */
 		sim.preview();
-		 //sim.export();
+		//sim.export();
 	}
 }
