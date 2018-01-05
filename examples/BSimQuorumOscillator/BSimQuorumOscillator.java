@@ -80,7 +80,7 @@ public class BSimQuorumOscillator {
 				for(BSimQuorumBacterium b : bacteria) {
 					b.action();		
 					b.updatePosition();
-				}
+			}
 				field.update();
 			}		
 		});

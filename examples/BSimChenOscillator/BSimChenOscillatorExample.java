@@ -34,7 +34,7 @@ public class BSimChenOscillatorExample {
     private boolean export = false;
 
     @Parameter(names = "-dim", arity = 3, description = "The dimensions (x, y, z) of simulation environment (um).")
-    public List<Double> simDimensions = new ArrayList<>(Arrays.asList(new Double[] {50., 50., 1.}));
+    public List<Double> simDimensions = new ArrayList<>(Arrays.asList(new Double[] {50., 50., 50.}));
 
     // Diffusion
     @Parameter(names = "-diff", arity = 1, description = "External diffusivity.")
