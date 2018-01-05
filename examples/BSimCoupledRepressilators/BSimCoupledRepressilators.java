@@ -42,7 +42,7 @@ public class BSimCoupledRepressilators {
 
 		 double simX = 50.0;
 		 double simY = 50.0;
-		 double simZ = 1.0;
+		 double simZ = 50.0;
 
 		/*********************************************************
 		 * Create a new directory for the simulation results

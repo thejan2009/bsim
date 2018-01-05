@@ -34,7 +34,7 @@ public class BSimChenOscillatorExample {
     private boolean export = false;
 
     @Parameter(names = "-dim", arity = 3, description = "The dimensions (x, y, z) of simulation environment (um).")
-    public List<Double> simDimensions = new ArrayList<>(Arrays.asList(new Double[] {50., 50., 50.}));
+    public List<Double> simDimensions = new ArrayList<>(Arrays.asList(new Double[] {100., 100., 100.}));
 
     // Diffusion
     @Parameter(names = "-diff", arity = 1, description = "External diffusivity.")
@@ -133,10 +133,10 @@ public class BSimChenOscillatorExample {
             sim.setLeakyRate(0, 0, 0.1/60.0, 0, 0, 0);
         }
 
-        double external_decay = mu_e/60.0;
+        double external_decay = mu_e/60.0; // mu_e = 0 glej zgoraj
 
-        BSimChemicalField h_e_field = new BSimChemicalField(sim, new int[] {(int) simX, (int)simY, 1}, external_diffusivity, external_decay);
-        BSimChemicalField i_e_field = new BSimChemicalField(sim, new int[] {(int) simX, (int)simY, 1}, external_diffusivity, external_decay);
+        BSimChemicalField h_e_field = new BSimChemicalField(sim, new int[] {(int) simX, (int)simY, (int)simZ}, external_diffusivity, external_decay);
+        BSimChemicalField i_e_field = new BSimChemicalField(sim, new int[] {(int) simX, (int)simY, (int)simZ}, external_diffusivity, external_decay);
 
         // ICs as in Chen paper (as in original DDEs)
         h_e_field.setConc(10.0);
@@ -156,7 +156,81 @@ public class BSimChenOscillatorExample {
 //
 //        popGen.mixedAsBlock(nActivatorStart, nRepressorStart);
 
-        Random bacRng = new Random();
+////////////////////////////////////////////////////////////////////////////////////
+        // CUstom code Matej DOlenc
+
+        int x = 10, y = 10, z = 10;
+        double[] ICs = {10, 1, 10, 10, 10, 10, 10, 0};
+        int i = 0;
+        // Add bacteria to the fixed position in a vector
+        while(bacteriaActivators.size() < 100/2) { //200, 100, 500, 1000
+            ActivatorBacterium p = new ActivatorBacterium(sim,
+                    new Vector3d(x,y,z), new Vector3d(x,y,z),  h_e_field, i_e_field, ICs);
+
+            x += 10;
+            if (x >= sim.getBound().x-10){
+                x = 10;
+                y += 10;
+            }
+            if (y >= sim.getBound().y-10){
+                y = 10;
+                z += 10;
+            }
+            if(z >= sim.getBound().z-10){
+                z = 10;
+                break; //vse smo zasedl? nism testirou preveč, ampak mislm da ne bomo nikol presegl. Btw, to sm se čist random neki zmislu. samo tok da je determ. postavitev ne pa random
+            }
+
+           /* Vector3d distance = new Vector3d(0,0,0);
+
+            for(BSimCapsuleBacterium otherBac : bacteriaAll){
+                distance.sub(otherBac.position, pos);
+                if(distance.lengthSquared() < 0){
+                    continue;
+                }
+            }*/
+            bacteriaActivators.add(p);
+            bacteriaAll.add(p);
+            System.out.println(i);
+            i++;
+            System.out.println(x+" "+y+" "+z);
+        }
+        System.out.println("Repressors");
+        while(bacteriaRepressors.size() < 100/2) { //200, 100, 500, 1000
+            RepressorBacterium p = new RepressorBacterium(sim,
+                    new Vector3d(x,y,z), new Vector3d(0,0,0),  h_e_field, i_e_field, ICs);
+
+            x += 10;
+            if (x > sim.getBound().x-10){
+                x = 10;
+                y += 10;
+            }
+            if (y > sim.getBound().y-10){
+                y = 10;
+                z += 10;
+            }
+            if(z > sim.getBound().z-10){
+                z = 10;
+                break; //vse smo zasedl? nism testirou preveč, ampak mislm da ne bomo nikol presegl. Btw, to sm se čist random neki zmislu. samo tok da je determ. postavitev ne pa random
+            }
+
+           /* Vector3d distance = new Vector3d(0,0,0);
+
+            for(BSimCapsuleBacterium otherBac : bacteriaAll){
+                distance.sub(otherBac.position, pos);
+                if(distance.lengthSquared() < 0){
+                    continue;
+                }
+            }*/
+
+            bacteriaRepressors.add(p);
+            bacteriaAll.add(p);
+            System.out.println(i);
+            i++;
+            System.out.println(x+" "+y+" "+z);
+        }
+
+        /*Random bacRng = new Random();
 
         generator:
         while(bacteriaActivators.size() < nActivatorStart) {
@@ -216,7 +290,7 @@ public class BSimChenOscillatorExample {
 
             bacteriaRepressors.add(bac);
             bacteriaAll.add(bac);
-        }
+        }*/
 
         // Set up stuff for growth.
         final ArrayList<ActivatorBacterium> act_born = new ArrayList();
