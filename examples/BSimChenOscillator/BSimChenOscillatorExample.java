@@ -97,7 +97,7 @@ public class BSimChenOscillatorExample {
         // create the simulation object
         BSim sim = new BSim();
         sim.setDt(0.01);	//enako kot pri CoupledRep   // Simulation Timestep
-        sim.setSimulationTime(6000); //enako kot pri coupledRep
+        sim.setSimulationTime(43200); //6000 premalo
         //sim.setSimulationTime(43200);       // 36000 = 10 hours; 600 minutes.
 //        sim.setSimulationTime(60000);
         sim.setTimeFormat("0.00");		    // Time Format for display
@@ -846,9 +846,9 @@ public class BSimChenOscillatorExample {
             /**
              * Export a rendered image file
              */
-            BSimPngExporter imageExporter = new BSimPngExporter(sim, drawer, filePath);
-            imageExporter.setDt(30);
-            sim.addExporter(imageExporter);
+            //BSimPngExporter imageExporter = new BSimPngExporter(sim, drawer, filePath);
+            //imageExporter.setDt(30);
+            //sim.addExporter(imageExporter);
 
             sim.export();
 
