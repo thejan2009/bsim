@@ -126,8 +126,13 @@ public class BSim {
 
 		// Increment integer timesteps than adding to double time to avoid rouding issues
 		for(timestep = 0; timestep <= timesteps(simulationTime); timestep++) {			
-			ticker.tick();	
-			System.out.println(getFormattedTime());
+			ticker.tick();
+
+			// only print time every 6000 iterations (in CoupledRepressilators, that's one minute)
+			if (timestep % 6000 == 0) {
+				System.out.println(getFormattedTime());
+			}
+
 			for(BSimExporter exporter : exporters)
 				if(timestep % timesteps(exporter.getDt()) == 0) exporter.during();
 		}		
