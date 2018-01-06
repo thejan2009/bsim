@@ -39,11 +39,6 @@ public class BSimCoupledRepressilators {
 	 */
 	 public static void main(String[] args) {
 
-
-		 double simX = 50.0;
-		 double simY = 50.0;
-		 double simZ = 50.0;
-
 		/*********************************************************
 		 * Create a new directory for the simulation results
 		 */

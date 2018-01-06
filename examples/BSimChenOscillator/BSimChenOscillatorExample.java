@@ -31,7 +31,7 @@ import java.util.List;
 public class BSimChenOscillatorExample {
 
     @Parameter(names = "-export", description = "Enable export mode.")
-    private boolean export = false;
+    private boolean export = true;
 
     @Parameter(names = "-dim", arity = 3, description = "The dimensions (x, y, z) of simulation environment (um).")
     public List<Double> simDimensions = new ArrayList<>(Arrays.asList(new Double[] {100., 100., 100.}));
@@ -56,7 +56,7 @@ public class BSimChenOscillatorExample {
     // 100x85 -> 1000
     // Density (cell number)
     @Parameter(names = "-pop", arity = 1, description = "Initial seed population (n_total).")
-    public int initialPopulation = 10;
+    public int initialPopulation = 100; //200, 1000
 
     // A:R ratio
     @Parameter(names = "-ratio", arity = 1, description = "Ratio of initial populations (proportion of activators).")
@@ -64,7 +64,7 @@ public class BSimChenOscillatorExample {
 
     // Multipliers for the cell wall diffusion, and for the synthesis of QS molecules.
     @Parameter(names = "-qspars", arity = 4, description = "Multipliers for the quorum sensing parameters. [D_H, D_I, phi_H, phi_I].")
-    public List<Double> qsPars = new ArrayList<>(Arrays.asList(new Double[] {1., 1., 1., 1.}));
+    public List<Double> qsPars = new ArrayList<>(Arrays.asList(new Double[] {1., 1., 1., 1.})); //{2., 2., 2., 2.}, {10., 10., 10., 10.}
 
 
     /**
@@ -96,11 +96,13 @@ public class BSimChenOscillatorExample {
 
         // create the simulation object
         BSim sim = new BSim();
-        sim.setDt(0.01);				    // Simulation Timestep
-        sim.setSimulationTime(43200);       // 36000 = 10 hours; 600 minutes.
+        sim.setDt(0.01);	//enako kot pri CoupledRep   // Simulation Timestep
+        sim.setSimulationTime(6000); //enako kot pri coupledRep
+        //sim.setSimulationTime(43200);       // 36000 = 10 hours; 600 minutes.
 //        sim.setSimulationTime(60000);
         sim.setTimeFormat("0.00");		    // Time Format for display
         sim.setBound(simX, simY, simZ);		// Simulation Boundaries
+        sim.setVisc(1.0);
 
         /**
          * OK, so we need to set up the global parameters from inputs.
@@ -120,23 +122,38 @@ public class BSimChenOscillatorExample {
         /*********************************************************
          * Set up the chemical fields
          */
-        double external_diffusivity = diffusivity/60.0;
+        //Naša vrednost:
+        double external_diffusivity = 0.001; //0.0001, 0.00001
+        //double external_diffusivity = diffusivity/60.0;
         // 800/60 - repressor oscillates but activator levels out rapidly
         // 80/60 - more transients, only starts levelling at the end of the 10 hours
 
-        // Boundaries are not periodic
-        sim.setSolid(true, true, true);
+        //Naša vrednost:
+        double external_decay = 0.01/60;
+        //double external_decay = mu_e/60.0; // mu_e = 0 glej zgoraj
 
-        // Leaky on the bottom
+        // Boundaries are not periodic
+        sim.setSolid(false, false, false); //v coupled je vse na false
+        //sim.setSolid(true, true, true);
+
+        //Leaky NPMP - nikjer ne leak-a!
         if(!fixedBounds) {
-            sim.setLeaky(false, false, true, false, false, false);
-            sim.setLeakyRate(0, 0, 0.1/60.0, 0, 0, 0);
+            sim.setLeaky(false, false, false, false, false, false);
         }
 
-        double external_decay = mu_e/60.0; // mu_e = 0 glej zgoraj
+        // Leaky on the bottom
+        /*(!fixedBounds) {
+            sim.setLeaky(false, false, true, false, false, false);
+            sim.setLeakyRate(0, 0, 0.1/60.0, 0, 0, 0);
+        }*/
 
-        BSimChemicalField h_e_field = new BSimChemicalField(sim, new int[] {(int) simX, (int)simY, (int)simZ}, external_diffusivity, external_decay);
-        BSimChemicalField i_e_field = new BSimChemicalField(sim, new int[] {(int) simX, (int)simY, (int)simZ}, external_diffusivity, external_decay);
+
+        //NPMP Chem. fields
+        BSimChemicalField h_e_field = new BSimChemicalField(sim, new int[] { 25, 25, 25}, external_diffusivity, external_decay);
+        BSimChemicalField i_e_field = new BSimChemicalField(sim, new int[] { 25, 25, 25}, external_diffusivity, external_decay);
+
+        //BSimChemicalField h_e_field = new BSimChemicalField(sim, new int[] {(int) simX, (int)simY, (int)simZ}, external_diffusivity, external_decay);
+        //BSimChemicalField i_e_field = new BSimChemicalField(sim, new int[] {(int) simX, (int)simY, (int)simZ}, external_diffusivity, external_decay);
 
         // ICs as in Chen paper (as in original DDEs)
         h_e_field.setConc(10.0);
@@ -163,18 +180,18 @@ public class BSimChenOscillatorExample {
         double[] ICs = {10, 1, 10, 10, 10, 10, 10, 0};
         int i = 0;
         // Add bacteria to the fixed position in a vector
-        while(bacteriaActivators.size() < 100/2) { //200, 100, 500, 1000
+        while(bacteriaActivators.size() < initialPopulation/2) { //200, 100, 1000
             ActivatorBacterium p = new ActivatorBacterium(sim,
                     new Vector3d(x,y,z), new Vector3d(x,y,z),  h_e_field, i_e_field, ICs);
 
-            x += 10;
+            x += 5;
             if (x >= sim.getBound().x-10){
                 x = 10;
-                y += 10;
+                y += 5;
             }
             if (y >= sim.getBound().y-10){
                 y = 10;
-                z += 10;
+                z += 5;
             }
             if(z >= sim.getBound().z-10){
                 z = 10;
@@ -196,18 +213,18 @@ public class BSimChenOscillatorExample {
             System.out.println(x+" "+y+" "+z);
         }
         System.out.println("Repressors");
-        while(bacteriaRepressors.size() < 100/2) { //200, 100, 500, 1000
+        while(bacteriaRepressors.size() < initialPopulation/2) { //200, 100, 1000
             RepressorBacterium p = new RepressorBacterium(sim,
                     new Vector3d(x,y,z), new Vector3d(0,0,0),  h_e_field, i_e_field, ICs);
 
-            x += 10;
+            x += 5;
             if (x > sim.getBound().x-10){
                 x = 10;
-                y += 10;
+                y += 5;
             }
             if (y > sim.getBound().y-10){
                 y = 10;
-                z += 10;
+                z += 5;
             }
             if(z > sim.getBound().z-10){
                 z = 10;
@@ -548,8 +565,10 @@ public class BSimChenOscillatorExample {
                 simParameters += "__leakyBounds";
             }
 
-            String filePath = BSimUtils.generateDirectoryPath("/Users/antmatyjajo/Desktop/tmp-results/" + simParameters + "/");
+           // String filePath = BSimUtils.generateDirectoryPath("/Users/antmatyjajo/Desktop/tmp-results/" + simParameters + "/");
+
 //            String filePath = BSimUtils.generateDirectoryPath("/home/am6465/tmp-results/" + simParameters + "/");
+            String filePath = BSimUtils.generateDirectoryPath("results/" + BSimUtils.timeStamp() +"/");
 
 
             /*********************************************************

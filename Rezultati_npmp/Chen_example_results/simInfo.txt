@@ -1,0 +1,12 @@
+Simulation metadata.
+Chen/Bennett consortium oscillator system.
+Simulation dimensions: (100.0, 100.0, 100.0)
+Initial population: 100
+Ratio 0.5
+Spatial signalling diffusivity: 800.0
+Spatial degradation (mu_e): 0.0
+Boundaries: leaky
+Multiplier D_H: 1.0
+Multiplier D_I: 1.0
+Multiplier phi_H: 1.0
+Multiplier phi_I: 1.0
