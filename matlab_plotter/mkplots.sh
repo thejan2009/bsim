@@ -3,7 +3,7 @@
 folder=$1
 # folder=../coupled-ab/2018-01-06_14-26-45
 
-for j in $folder/*; do
+for j in $folder/10; do
     for i in $j/*; do
         echo $i;
         a=${i##*/};
