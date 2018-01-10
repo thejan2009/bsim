@@ -8,11 +8,15 @@ df = pd.read_csv("heyy.csv")
 value = 'period'
 #value = 'amplitude'
 
-show_pop = [10, 100, 1000]
+show_pop = [100, 200, 500, 1000]
 
 # parse data
 data = [
-    df[df["population"]==n].pivot(index='alpha', columns='beta', values=value).fillna(0) for n in show_pop
+    df[df["population"]==n]
+        .pivot(index='alpha', columns='beta', values=value)
+        .fillna(10**(-10))
+        .replace(-1, 10**(-10))
+        .replace(0, 10**(-10)) for n in show_pop
 ]
 
 vmin = min(np.min(d.values) for d in data)
@@ -25,7 +29,10 @@ for ax, d, p in zip(axs, data, show_pop):
     print(d)
     print(d.values)
     X, Y = np.meshgrid(d.index, d.columns)
-    im = ax.pcolormesh(X, Y, d.values, vmin=vmin, vmax=vmax)
+    if value == 'period':
+        im = ax.pcolormesh(X, Y, d.values, vmin=vmin, vmax=vmax)
+    else:
+        im = ax.pcolormesh(X, Y, d.values, vmin=vmin, vmax=vmax, norm=LogNorm())
     ax.set_title(str(value) + ' for population of ' + str(p))
     ax.set_xlabel('alpha')
     ax.set_ylabel('beta')
