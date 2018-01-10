@@ -5,10 +5,10 @@ from matplotlib.colors import LogNorm
 
 df = pd.read_csv("heyy.csv")
 
-#value = 'period'
-value = 'amplitude'
+value = 'period'
+#value = 'amplitude'
 
-show_pop = [20, 50, 100, 200, 500, 1000]
+show_pop = [10, 100, 1000]
 
 # parse data
 data = [
@@ -24,12 +24,13 @@ for ax, d, p in zip(axs, data, show_pop):
     d = d[d.columns[::-1]]
     print(d)
     print(d.values)
-    im = ax.imshow(d, vmin=vmin, vmax=vmax)
+    X, Y = np.meshgrid(d.index, d.columns)
+    im = ax.pcolormesh(X, Y, d.values, vmin=vmin, vmax=vmax)
     ax.set_title(str(value) + ' for population of ' + str(p))
     ax.set_xlabel('alpha')
     ax.set_ylabel('beta')
-    ax.set_xticklabels(d.index)
-    ax.set_yticklabels(d.columns)
+    ax.set_xscale('log')
+    ax.set_yscale('log')
 
 fig.subplots_adjust(right=0.8)
 cbar_ax = fig.add_axes([0.85, 0.29, 0.05, 0.41])
