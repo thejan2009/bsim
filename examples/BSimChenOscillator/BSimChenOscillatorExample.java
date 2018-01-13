@@ -56,11 +56,11 @@ public class BSimChenOscillatorExample {
     // 100x85 -> 1000
     // Density (cell number)
     @Parameter(names = "-pop", arity = 1, description = "Initial seed population (n_total).")
-    public int initialPopulation = 100; //200, 1000
+    public int initialPopulation = 1000; //200, 1000
 
     // A:R ratio
     @Parameter(names = "-ratio", arity = 1, description = "Ratio of initial populations (proportion of activators).")
-    public double populationRatio = 0.5;
+    public double populationRatio = 250/1000; // 0.5
 
     // Multipliers for the cell wall diffusion, and for the synthesis of QS molecules.
     @Parameter(names = "-qspars", arity = 4, description = "Multipliers for the quorum sensing parameters. [D_H, D_I, phi_H, phi_I].")
@@ -180,7 +180,7 @@ public class BSimChenOscillatorExample {
         double[] ICs = {10, 1, 10, 10, 10, 10, 10, 0};
         int i = 0;
         // Add bacteria to the fixed position in a vector
-        while(bacteriaActivators.size() < initialPopulation/2) { //200, 100, 1000
+        while(bacteriaActivators.size() < 250) { //200, 100, 1000 initialPopulation/2
             ActivatorBacterium p = new ActivatorBacterium(sim,
                     new Vector3d(x,y,z), new Vector3d(x,y,z),  h_e_field, i_e_field, ICs);
 
@@ -213,7 +213,7 @@ public class BSimChenOscillatorExample {
             System.out.println(x+" "+y+" "+z);
         }
         System.out.println("Repressors");
-        while(bacteriaRepressors.size() < initialPopulation/2) { //200, 100, 1000
+        while(bacteriaRepressors.size() < 750) { //200, 100, 1000 initialPopulation/2
             RepressorBacterium p = new RepressorBacterium(sim,
                     new Vector3d(x,y,z), new Vector3d(0,0,0),  h_e_field, i_e_field, ICs);
 
