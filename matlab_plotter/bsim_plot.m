@@ -40,7 +40,7 @@ for i = 1:numOfCells
 end
 title('Represilator - simulacija')
 xlabel('Trajanje [s]') % x-axis label
-ylabel('Nivo lacI mRNA v bakterijah') % y-axis label
+ylabel('Nivo lacI v bakterijah') % y-axis label
 
 print -color -depsc mRNA.eps % export slike
 hold off;
